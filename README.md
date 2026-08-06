@@ -2,8 +2,6 @@
 
 FinPulse is a production-style data engineering portfolio project for inclusive digital lending. It ingests high-volume GSM, device, mobile-money, loan, and repayment events across five African markets; validates and curates them with Spark; stores them in a medallion lakehouse; publishes governed credit marts; and serves live operational, portfolio, and model-risk analytics.
 
-This is an original reference implementation built with synthetic data. It is not affiliated with JUMO and contains no real customer data.
-
 ## What this demonstrates
 
 | Capability | Implementation |
