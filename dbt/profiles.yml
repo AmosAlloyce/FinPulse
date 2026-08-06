@@ -1,0 +1,13 @@
+finpulse:
+  target: dev
+  outputs:
+    dev:
+      type: postgres
+      host: "{{ env_var('DBT_HOST', 'localhost') }}"
+      port: 5432
+      user: "{{ env_var('DBT_USER', 'finpulse') }}"
+      password: "{{ env_var('DBT_PASSWORD', 'finpulse') }}"
+      dbname: "{{ env_var('DBT_DATABASE', 'finpulse') }}"
+      schema: "{{ env_var('DBT_SCHEMA', 'analytics') }}"
+      threads: 4
+

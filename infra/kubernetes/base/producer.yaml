@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: finpulse-producer
+  namespace: finpulse
+spec:
+  replicas: 2
+  selector:
+    matchLabels: {app: finpulse-producer}
+  template:
+    metadata:
+      labels: {app: finpulse-producer}
+    spec:
+      serviceAccountName: finpulse
+      containers:
+        - name: producer
+          image: ACCOUNT_ID.dkr.ecr.af-south-1.amazonaws.com/finpulse-producer:latest
+          envFrom:
+            - configMapRef: {name: finpulse-config}
+            - secretRef: {name: finpulse-secrets}
+          resources:
+            requests: {cpu: 100m, memory: 128Mi}
+            limits: {cpu: 500m, memory: 512Mi}
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+

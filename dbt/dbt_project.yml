@@ -1,0 +1,21 @@
+name: finpulse
+version: 1.0.0
+config-version: 2
+profile: finpulse
+model-paths: ["models"]
+macro-paths: ["macros"]
+clean-targets: ["target", "dbt_packages"]
+
+models:
+  finpulse:
+    staging:
+      +materialized: view
+      +schema: staging
+    intermediate:
+      +materialized: view
+      +schema: intermediate
+    marts:
+      +materialized: table
+      +schema: analytics
+      +on_schema_change: sync_all_columns
+

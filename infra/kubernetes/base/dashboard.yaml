@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: finpulse-dashboard
+  namespace: finpulse
+spec:
+  replicas: 2
+  selector:
+    matchLabels: {app: finpulse-dashboard}
+  template:
+    metadata:
+      labels: {app: finpulse-dashboard}
+    spec:
+      serviceAccountName: finpulse
+      containers:
+        - name: dashboard
+          image: ACCOUNT_ID.dkr.ecr.af-south-1.amazonaws.com/finpulse-dashboard:latest
+          ports: [{name: http, containerPort: 8501}]
+          envFrom:
+            - configMapRef: {name: finpulse-config}
+          readinessProbe:
+            httpGet: {path: /_stcore/health, port: http}
+          resources:
+            requests: {cpu: 150m, memory: 256Mi}
+            limits: {cpu: 750m, memory: 1Gi}
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: finpulse-dashboard
+  namespace: finpulse
+spec:
+  selector: {app: finpulse-dashboard}
+  ports: [{name: http, port: 80, targetPort: http}]
+

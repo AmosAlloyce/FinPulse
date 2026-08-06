@@ -1,0 +1,31 @@
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: finpulse-api
+  namespace: finpulse
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: finpulse-api
+  minReplicas: 2
+  maxReplicas: 10
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 300
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target: {type: Utilization, averageUtilization: 65}
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: finpulse-api
+  namespace: finpulse
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels: {app: finpulse-api}
+

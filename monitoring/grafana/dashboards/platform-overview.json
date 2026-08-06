@@ -1,0 +1,63 @@
+{
+  "annotations": {"list": []},
+  "editable": true,
+  "graphTooltip": 1,
+  "panels": [
+    {
+      "type": "stat",
+      "title": "Warehouse events",
+      "id": 1,
+      "gridPos": {"h": 5, "w": 6, "x": 0, "y": 0},
+      "targets": [{"expr": "finpulse_warehouse_events_total", "legendFormat": "events"}],
+      "fieldConfig": {"defaults": {"color": {"mode": "thresholds"}, "thresholds": {"steps": [{"color": "green", "value": null}]}}}
+    },
+    {
+      "type": "stat",
+      "title": "Latest event age",
+      "id": 2,
+      "gridPos": {"h": 5, "w": 6, "x": 6, "y": 0},
+      "targets": [{"expr": "finpulse_latest_event_age_seconds", "legendFormat": "seconds"}],
+      "fieldConfig": {"defaults": {"unit": "s", "thresholds": {"steps": [{"color": "green", "value": null}, {"color": "yellow", "value": 60}, {"color": "red", "value": 300}]}}}
+    },
+    {
+      "type": "stat",
+      "title": "Quarantine rate",
+      "id": 3,
+      "gridPos": {"h": 5, "w": 6, "x": 12, "y": 0},
+      "targets": [{"expr": "finpulse_quarantine_rate", "legendFormat": "rate"}],
+      "fieldConfig": {"defaults": {"unit": "percentunit", "thresholds": {"steps": [{"color": "green", "value": null}, {"color": "yellow", "value": 0.005}, {"color": "red", "value": 0.02}]}}}
+    },
+    {
+      "type": "timeseries",
+      "title": "Streaming events by type",
+      "id": 4,
+      "gridPos": {"h": 9, "w": 12, "x": 0, "y": 5},
+      "targets": [{"expr": "rate(finpulse_stream_processed_total[1m])", "legendFormat": "{{event_type}}"}]
+    },
+    {
+      "type": "timeseries",
+      "title": "API query p95",
+      "id": 5,
+      "gridPos": {"h": 9, "w": 12, "x": 12, "y": 5},
+      "targets": [{"expr": "histogram_quantile(0.95, sum(rate(finpulse_api_query_duration_seconds_bucket[5m])) by (le, endpoint))", "legendFormat": "{{endpoint}}"}],
+      "fieldConfig": {"defaults": {"unit": "s"}}
+    },
+    {
+      "type": "timeseries",
+      "title": "Kafka consumer health",
+      "id": 6,
+      "gridPos": {"h": 8, "w": 24, "x": 0, "y": 14},
+      "targets": [{"expr": "redpanda_kafka_request_latency_seconds", "legendFormat": "request latency"}]
+    }
+  ],
+  "refresh": "10s",
+  "schemaVersion": 39,
+  "tags": ["finpulse", "data-platform", "streaming"],
+  "templating": {"list": []},
+  "time": {"from": "now-1h", "to": "now"},
+  "timezone": "utc",
+  "title": "FinPulse Platform Overview",
+  "uid": "finpulse-platform",
+  "version": 1
+}
+

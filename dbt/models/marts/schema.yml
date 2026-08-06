@@ -1,0 +1,38 @@
+version: 2
+
+models:
+  - name: fct_credit_portfolio
+    description: One row per application with the latest decision and repayment performance.
+    columns:
+      - name: application_id
+        tests: [unique, not_null]
+      - name: customer_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_customers')
+              field: customer_id
+      - name: decision
+        tests:
+          - accepted_values:
+              values: ['approved', 'declined', 'manual_review']
+              config: {where: "decision is not null"}
+      - name: score
+        tests:
+          - accepted_range:
+              min_value: 0
+              max_value: 1000
+              config: {where: "score is not null"}
+  - name: dim_customer_features
+    columns:
+      - name: customer_id
+        tests: [unique, not_null]
+      - name: country_code
+        tests:
+          - accepted_values:
+              values: ['KEN', 'UGA', 'GHA', 'TZA', 'ZMB']
+  - name: mart_country_performance
+    columns:
+      - name: country_code
+        tests: [unique, not_null]
+

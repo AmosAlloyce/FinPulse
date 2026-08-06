@@ -1,0 +1,12 @@
+.git
+.venv
+__pycache__
+*.pyc
+data
+artifacts
+.pytest_cache
+.ruff_cache
+.terraform
+dbt/target
+airflow/logs
+

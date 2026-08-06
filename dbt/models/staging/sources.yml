@@ -1,0 +1,18 @@
+version: 2
+
+sources:
+  - name: warehouse
+    schema: warehouse
+    loaded_at_field: occurred_at
+    freshness:
+      warn_after: {count: 15, period: minute}
+      error_after: {count: 60, period: minute}
+    tables:
+      - name: customers
+      - name: gsm_usage
+      - name: mobile_money_transactions
+      - name: loan_applications
+      - name: loan_decisions
+      - name: repayments
+      - name: event_fact
+

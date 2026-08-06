@@ -1,0 +1,9 @@
+project_name               = "finpulse"
+environment                = "dev"
+aws_region                 = "af-south-1"
+vpc_id                     = "vpc-0123456789abcdef0"
+private_subnet_ids         = ["subnet-private-a", "subnet-private-b"]
+data_security_group_ids    = ["sg-data-platform"]
+redshift_base_capacity     = 8
+alert_email                = "data-platform@example.com"
+

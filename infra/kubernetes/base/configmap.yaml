@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: finpulse-config
+  namespace: finpulse
+data:
+  FINPULSE_ENV: production
+  FINPULSE_LOG_LEVEL: INFO
+  FINPULSE_COUNTRIES: KEN,UGA,GHA,TZA,ZMB
+  KAFKA_RAW_TOPIC: finpulse.events.raw.v1
+  KAFKA_DLQ_TOPIC: finpulse.events.dlq.v1
+  AWS_REGION: af-south-1
+  S3_BUCKET: finpulse-prod-lakehouse
+  API_URL: http://finpulse-api:8000
+
