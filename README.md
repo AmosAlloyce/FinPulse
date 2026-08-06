@@ -218,10 +218,6 @@ terraform apply finpulse.tfplan
 
 It provisions a private, encrypted data plane using MSK Serverless, S3/Glue, Redshift Serverless, EMR Serverless, DynamoDB, KMS, Secrets Manager, IAM, CloudWatch, and SNS. Kubernetes manifests target EKS and assume the Spark Operator and workload identity are already installed.
 
-## Interview walkthrough
-
-Use [docs/DEMO.md](docs/DEMO.md) for an eight-minute script that starts with the business problem, follows one event through the system, demonstrates failure handling, and ends with the AWS scaling path and engineering tradeoffs.
-
 ## License
 
 MIT. See [LICENSE](LICENSE).
