@@ -70,10 +70,10 @@ resource "aws_msk_serverless_cluster" "events" {
     security_group_ids = var.data_security_group_ids
   }
   client_authentication {
-    sasl { 
-      iam { 
-        enabled = true 
-      } 
+    sasl {
+      iam {
+        enabled = true
+      }
     }
   }
 }
@@ -127,9 +127,9 @@ resource "aws_iam_role" "redshift" {
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [{
-      Effect = "Allow"
+      Effect    = "Allow"
       Principal = { Service = "redshift.amazonaws.com" }
-      Action = "sts:AssumeRole"
+      Action    = "sts:AssumeRole"
     }]
   })
 }
@@ -140,18 +140,18 @@ resource "aws_iam_role_policy" "redshift_lakehouse" {
     Version = "2012-10-17"
     Statement = [
       {
-        Effect = "Allow"
-        Action = ["s3:GetObject", "s3:ListBucket"]
+        Effect   = "Allow"
+        Action   = ["s3:GetObject", "s3:ListBucket"]
         Resource = [aws_s3_bucket.lakehouse.arn, "${aws_s3_bucket.lakehouse.arn}/*"]
       },
       {
-        Effect = "Allow"
-        Action = ["glue:GetDatabase", "glue:GetDatabases", "glue:GetTable", "glue:GetTables", "glue:GetPartitions"]
+        Effect   = "Allow"
+        Action   = ["glue:GetDatabase", "glue:GetDatabases", "glue:GetTable", "glue:GetTables", "glue:GetPartitions"]
         Resource = "*"
       },
       {
-        Effect = "Allow"
-        Action = ["kms:Decrypt", "kms:GenerateDataKey"]
+        Effect   = "Allow"
+        Action   = ["kms:Decrypt", "kms:GenerateDataKey"]
         Resource = aws_kms_key.data.arn
       }
     ]
@@ -188,9 +188,9 @@ resource "aws_iam_role" "emr_serverless" {
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [{
-      Effect = "Allow"
+      Effect    = "Allow"
       Principal = { Service = "emr-serverless.amazonaws.com" }
-      Action = "sts:AssumeRole"
+      Action    = "sts:AssumeRole"
     }]
   })
 }
@@ -201,18 +201,18 @@ resource "aws_iam_role_policy" "emr_serverless" {
     Version = "2012-10-17"
     Statement = [
       {
-        Effect = "Allow"
-        Action = ["s3:GetObject", "s3:PutObject", "s3:DeleteObject", "s3:ListBucket"]
+        Effect   = "Allow"
+        Action   = ["s3:GetObject", "s3:PutObject", "s3:DeleteObject", "s3:ListBucket"]
         Resource = [aws_s3_bucket.lakehouse.arn, "${aws_s3_bucket.lakehouse.arn}/*"]
       },
       {
-        Effect = "Allow"
-        Action = ["glue:GetDatabase", "glue:GetTable", "glue:GetPartitions", "glue:CreatePartition", "glue:UpdatePartition"]
+        Effect   = "Allow"
+        Action   = ["glue:GetDatabase", "glue:GetTable", "glue:GetPartitions", "glue:CreatePartition", "glue:UpdatePartition"]
         Resource = "*"
       },
       {
-        Effect = "Allow"
-        Action = ["kms:Decrypt", "kms:Encrypt", "kms:GenerateDataKey"]
+        Effect   = "Allow"
+        Action   = ["kms:Decrypt", "kms:Encrypt", "kms:GenerateDataKey"]
         Resource = aws_kms_key.data.arn
       }
     ]
