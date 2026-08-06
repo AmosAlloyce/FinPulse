@@ -21,7 +21,7 @@ jobs:
       - run: ruff check src tests airflow/dags
       - run: ruff format --check src tests airflow/dags
       - run: pytest --cov=finpulse --cov-report=xml --cov-fail-under=75
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: coverage
           path: coverage.xml
@@ -35,7 +35,7 @@ jobs:
       - run: pip install -e .
       - run: finpulse schema --output /tmp/event-schema.json
       - run: finpulse local-demo --events 1000 --output /tmp/demo
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: contract-and-demo-artifacts
           path: |
