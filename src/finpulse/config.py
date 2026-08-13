@@ -19,7 +19,7 @@ class Settings(BaseSettings):
     environment: str = Field(default="development", alias="FINPULSE_ENV")
     log_level: str = Field(default="INFO", alias="FINPULSE_LOG_LEVEL")
     random_seed: int = Field(default=42, alias="FINPULSE_RANDOM_SEED")
-    countries: list[str] = Field(
+    countries: str | list[str] = Field(
         default_factory=lambda: ["KEN", "UGA", "GHA", "TZA", "ZMB"],
         alias="FINPULSE_COUNTRIES",
     )

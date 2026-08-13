@@ -7,7 +7,7 @@ name = "finpulse-data-platform"
 version = "1.0.0"
 description = "Production-style batch and streaming fintech data platform portfolio project"
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = ">=3.8"
 license = { text = "MIT" }
 authors = [{ name = "Portfolio Project" }]
 dependencies = [
