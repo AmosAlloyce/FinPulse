@@ -1,0 +1,322 @@
+.signal-lens {
+  --lens-scroll: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 0.88fr) minmax(0, 1fr);
+  gap: clamp(24px, 3vw, 56px);
+  align-items: center;
+  padding: 40px;
+  margin-bottom: 34px;
+  background: #142947;
+  color: #f4f7fc;
+  border-radius: 12px;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+.signal-lens::before {
+  content: '';
+  position: absolute;
+  inset: -60px;
+  background-image:
+    linear-gradient(#c7dafa0c 1px, transparent 1px),
+    linear-gradient(90deg, #c7dafa0c 1px, transparent 1px);
+  background-size: 36px 36px;
+  transform: translateY(calc(var(--lens-scroll) * -28px));
+  z-index: -1;
+}
+.lens-label {
+  display: flex;
+  gap: 9px;
+  align-items: center;
+  font-size: 13px;
+  color: #b5c7e3;
+  margin-bottom: 28px;
+}
+.lens-intro h2 {
+  font:
+    600 clamp(25px, 2.6vw, 39px)/1.16 'DM Sans',
+    sans-serif;
+  letter-spacing: -1.3px;
+  text-wrap: balance;
+}
+.lens-intro > p {
+  font-size: 16px;
+  color: #c0cee2;
+  margin: 22px 0 26px;
+  max-width: 34ch;
+  line-height: 1.7;
+}
+.lens-create {
+  color: #142947;
+  background: #f1f5ff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 13px 18px;
+  min-height: 46px;
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: 600;
+}
+.lens-create:hover {
+  background: #dce7fa;
+}
+.lens-create:active,
+.lens-open:active {
+  transform: translateY(1px);
+}
+.lens-object {
+  position: relative;
+  margin: 10px 0;
+  min-width: 0;
+}
+.lens-backplane {
+  position: absolute;
+  inset: -11px 11px 11px -11px;
+  border: 1px solid #728bb260;
+  border-radius: 9px;
+  background: #e0eaf012;
+  transform: translateY(calc(var(--lens-scroll) * -16px)) rotate(-2deg);
+}
+.lens-document {
+  position: relative;
+  background: #fcfdff;
+  border: 1px solid #e4eaf4;
+  color: #263b5a;
+  border-radius: 9px;
+  box-shadow: 0 16px 40px #06112033;
+}
+.lens-document-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  padding: 15px 20px;
+  border-bottom: 1px solid #e4eaf3;
+}
+.lens-document-head > span {
+  display: flex;
+  gap: 9px;
+  align-items: center;
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+}
+.lens-select {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding: 15px 20px 6px;
+  font-size: 13px;
+  color: #51647e;
+}
+.lens-select select {
+  max-width: 70%;
+  min-width: 0;
+  width: 225px;
+  padding: 8px;
+  background: white;
+  border: 1px solid #d7e0ed;
+  border-radius: 4px;
+  font-size: 13px;
+  min-height: 40px;
+}
+.lens-stages {
+  position: relative;
+  display: flex;
+  padding: 4px 20px 0;
+  gap: 0;
+}
+.lens-stages::before,
+.lens-stages::after {
+  content: '';
+  position: absolute;
+  height: 2px;
+  top: 28px;
+  left: 20px;
+  right: 20px;
+  background: #d8e2f1;
+  pointer-events: none;
+}
+.lens-stages::after {
+  background: #254bdf;
+  transform: scaleX(var(--stage-progress));
+  transform-origin: left;
+  transition: transform 180ms ease-out;
+}
+.lens-stages button {
+  position: relative;
+  flex: 1;
+  min-height: 66px;
+  padding: 13px 8px 0;
+  font-size: 13px;
+  color: #536783;
+  z-index: 1;
+  text-align: left;
+}
+.lens-stages button:last-child {
+  text-align: right;
+}
+.lens-stages button:nth-child(2) {
+  text-align: center;
+}
+.lens-stages button > span {
+  display: block;
+  height: 11px;
+  width: 11px;
+  margin-bottom: 8px;
+  border: 2px solid #a4b6d1;
+  border-radius: 50%;
+  background: #fcfdff;
+}
+.lens-stages button:nth-child(2) > span {
+  margin-left: auto;
+  margin-right: auto;
+}
+.lens-stages button:last-child > span {
+  margin-left: auto;
+}
+.lens-stages button[aria-pressed='true'] {
+  color: #2345bc;
+  font-weight: 600;
+}
+.lens-stages button[aria-pressed='true'] > span {
+  background: #254bdf;
+  border-color: #254bdf;
+}
+.lens-detail {
+  padding: 12px 20px 18px;
+  min-height: 237px;
+}
+.lens-detail h3 {
+  font-size: 17px;
+  line-height: 1.5;
+  letter-spacing: -0.3px;
+}
+.lens-detail p {
+  font-size: 13px;
+  line-height: 1.7;
+  color: #536783;
+  margin: 7px 0 16px;
+}
+.lens-detail dl {
+  margin: 0;
+}
+.lens-detail dl > div {
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  border-top: 1px solid #e3eaf3;
+  padding: 8px 0;
+  font-size: 12px;
+  line-height: 1.5;
+}
+.lens-detail dt {
+  color: #596b85;
+  flex-shrink: 0;
+}
+.lens-detail dd {
+  margin: 0;
+  max-width: 70%;
+  text-align: right;
+  overflow-wrap: anywhere;
+  font-variant-numeric: tabular-nums;
+}
+.lens-open {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  min-height: 48px;
+  padding: 13px 20px;
+  font-size: 14px;
+  color: #2348c4;
+  background: #f0f4ff;
+  border-top: 1px solid #dfe6f4;
+  border-radius: 0 0 8px 8px;
+}
+.lens-open svg:last-child {
+  margin-left: auto;
+}
+.lens-open:hover {
+  background: #e3ebfc;
+}
+.signal-lens :focus-visible {
+  outline: 3px solid #7397ed;
+  outline-offset: 3px;
+}
+@media (max-width: 1100px) {
+  .signal-lens {
+    padding: 30px;
+    gap: 26px;
+    grid-template-columns: 0.8fr 1fr;
+  }
+  .lens-intro h2 {
+    font-size: 28px;
+  }
+  .lens-select {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .lens-select select {
+    max-width: 100%;
+    width: 100%;
+  }
+}
+@media (max-width: 800px) {
+  .signal-lens {
+    grid-template-columns: 0.8fr 1fr;
+  }
+}
+@media (max-width: 600px) {
+  .signal-lens {
+    grid-template-columns: 1fr;
+    padding: 26px 20px 22px;
+    gap: 24px;
+  }
+  .lens-intro h2 {
+    font-size: 30px;
+    letter-spacing: -1px;
+  }
+  .lens-label {
+    margin-bottom: 19px;
+    font-size: 12px;
+  }
+  .lens-intro > p {
+    margin: 16px 0 18px;
+    font-size: 15px;
+  }
+  .lens-document-head,
+  .lens-select,
+  .lens-detail {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  .lens-detail {
+    min-height: 0;
+  }
+  .lens-detail h3 {
+    font-size: 16px;
+  }
+  .lens-detail dd {
+    max-width: 65%;
+  }
+  .lens-select {
+    flex-direction: row;
+    align-items: center;
+    font-size: 12px;
+  }
+  .lens-select select {
+    width: 64%;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .signal-lens::before,
+  .lens-backplane {
+    transform: none;
+  }
+  .lens-stages::after {
+    transition: none;
+  }
+}

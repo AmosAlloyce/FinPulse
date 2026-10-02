@@ -1,0 +1,44 @@
+WEBVTT
+
+NOTE
+AI-generated narration. Synthetic demonstration data.
+
+1
+00:00:00.500 --> 00:00:11.867
+Meet FinPulse, Alloyce Amos's credit data engineering project. This interactive demo follows synthetic events from their raw source to validated records and useful data products.
+
+2
+00:00:12.187 --> 00:00:21.670
+The overview connects five markets in one operating picture. Counts and quality measures come from the same event pipeline, and each currency keeps its own totals.
+
+3
+00:00:21.990 --> 00:00:31.712
+Open the event explorer to inspect the original envelope and the related customer events. The source remains visible, so an unexpected metric can be traced back to evidence.
+
+4
+00:00:32.032 --> 00:00:42.063
+Choose the invalid scenario and simulate a new batch. These records enter the raw bronze layer first. The original input stays available before any validation or correction.
+
+5
+00:00:42.383 --> 00:00:54.719
+In the pipeline studio, run the Python validation rules, dimensional loader, and SQL marts. Inspect the processing trace as raw events become validated silver records and gold aggregates.
+
+6
+00:00:55.039 --> 00:01:06.259
+The quality lab explains each exception. Duplicates are suppressed, while late events can pass with a warning. Invalid records stay in quarantine until a reviewed correction is ready.
+
+7
+00:01:06.579 --> 00:01:17.210
+Review a proposed correction and approve its replay. The original raw event is preserved, and the corrected result follows the pipeline again. This makes remediation traceable.
+
+8
+00:01:17.530 --> 00:01:29.681
+Market insights show counts, ratios, and values by country. Kenyan shillings, Ugandan shillings, Ghanaian cedis, Tanzanian shillings, and Zambian kwacha are kept separate.
+
+9
+00:01:30.001 --> 00:01:40.522
+The data product catalogue connects outputs to their lineage. Follow a product through the processing stages, inspect its schema, or export its records for further analysis.
+
+10
+00:01:40.842 --> 00:01:52.219
+FinPulse demonstrates validation, quality controls, replay, and reporting on synthetic credit data. Explore the working demo and source code; no new real credit decision is made here.

@@ -1,0 +1,42 @@
+name: finpulse-demo
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.demo
+    restart: unless-stopped
+    init: true
+    read_only: true
+    environment:
+      FINPULSE_DATA_DIR: /app/data
+      FINPULSE_WEB_DIST: /app/web/dist
+      COOKIE_PATH: /finpulse
+      PUBLIC_ORIGIN: ${PUBLIC_ORIGIN:-https://alloyce-amos.duckdns.org}
+    ports:
+      - "127.0.0.1:8011:8011"
+    volumes:
+      - finpulse_demo_data:/app/data
+    tmpfs:
+      - /tmp:size=32m,mode=1777
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    mem_limit: 512m
+    cpus: 1.0
+    pids_limit: 96
+    networks:
+      portfolio:
+        aliases:
+          - finpulse-app
+    logging:
+      driver: json-file
+      options:
+        max-size: 5m
+        max-file: "2"
+volumes:
+  finpulse_demo_data:
+networks:
+  portfolio:
+    external: true
+    name: three-dollar-motel_default

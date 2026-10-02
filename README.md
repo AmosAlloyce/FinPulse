@@ -1,5 +1,35 @@
 # FinPulse — Real-Time Credit Data Platform
 
+[**Open the interactive workspace →**](https://alloyce-amos.duckdns.org/finpulse/) · [Alloyce Amos’s portfolio](https://alloyce-amos.duckdns.org/) · [Watch walkthrough in repository](web/public/demo/finpulse-demo.mp4) · [Stream hosted](https://alloyce-amos.duckdns.org/finpulse/demo/finpulse-demo.mp4)
+
+[![FinPulse pipeline studio](web/public/demo/poster.jpg)](web/public/demo/finpulse-demo.mp4)
+
+FinPulse now includes a complete browser workspace. Generate synthetic events, run the pipeline, inspect the original payload, review a quarantined record, approve a correction, compare five markets, and export SQL data products. Each visitor gets an isolated SQLite sandbox. The public demo uses the project's original contracts, generator, quality rules and dimensional loader; its pipeline display reflects actual processing results.
+
+The six sections—overview, event explorer, quality lab, pipeline studio, market insights and data products—include responsive layouts, keyboard navigation, source lineage and a captioned 1:53 walkthrough with AI-generated neural narration. Values remain separated by currency. No real lending decisions or personal records are involved.
+
+### Run the web workspace
+
+Use Python 3.11+ and Node 22+. In one terminal:
+
+```bash
+python3 -m venv .venv-demo
+.venv-demo/bin/pip install -r requirements.demo.txt
+PYTHONPATH=src PUBLIC_ORIGIN=http://127.0.0.1:5174 .venv-demo/bin/uvicorn finpulse.demo.main:app --host 127.0.0.1 --port 8011
+```
+
+In another:
+
+```bash
+cd web
+npm ci
+npm run dev
+```
+
+Open `http://127.0.0.1:5174/finpulse/`. See [web deployment and controls](docs/WEB_DEMO.md) and the [API contract](docs/WEB_API.md). The hosted runtime fits a 512 MB container; the full streaming architecture below is also preserved in this repository and has separate infrastructure requirements.
+
+### The wider engineering platform
+
 FinPulse is a production-style data engineering portfolio project for inclusive digital lending. It ingests high-volume GSM, device, mobile-money, loan, and repayment events across five African markets; validates and curates them with Spark; stores them in a medallion lakehouse; publishes governed credit marts; and serves live operational, portfolio, and model-risk analytics.
 
 ## What this demonstrates
@@ -219,4 +249,3 @@ It provisions a private, encrypted data plane using MSK Serverless, S3/Glue, Red
 ## License
 
 MIT. See [LICENSE](LICENSE).
-
