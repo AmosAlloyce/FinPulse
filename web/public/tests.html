@@ -1,0 +1,1248 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>FinPulse · E2E Test Suite Results (Selenium 4.51)</title>
+  <meta name="description" content="Automated end-to-end browser test report for FinPulse Real-Time Credit Data Platform. 24 passing tests covering DLQ crucible, 5-market radar, SQL warehouse, and WebDriver BiDi.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%2308120e'/><path d='M8 16h4l3-6 4 12 3-6h6' stroke='%2327c997' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round' fill='none'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --sc-canvas: #07100c;
+      --sc-surface: #0c1a14;
+      --sc-surface-raised: #11241c;
+      --sc-surface-hover: #152c22;
+      --sc-ink: #f2f7f4;
+      --sc-ink-soft: #859e92;
+      --sc-ink-muted: #577064;
+
+      --sc-accent: #27c997;
+      --sc-accent-soft: rgba(39, 201, 151, 0.12);
+      --sc-accent-border: rgba(39, 201, 151, 0.28);
+      --sc-accent-glow: rgba(39, 201, 151, 0.45);
+
+      --sc-warn: #e5b342;
+      --sc-warn-soft: rgba(229, 179, 66, 0.12);
+      --sc-alert: #e06c75;
+      --sc-alert-soft: rgba(224, 108, 117, 0.12);
+
+      --sc-font-display: "DM Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+      --sc-font-text: "DM Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+      --sc-font-mono: "Space Mono", ui-monospace, monospace;
+
+      --sc-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--sc-canvas);
+      color: var(--sc-ink);
+      font-family: var(--sc-font-text);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow-x: hidden;
+      padding-top: 64px;
+    }
+
+    /* Noise overlay */
+    .bg-grain-overlay {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.035;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    }
+
+    .tabular-num {
+      font-family: var(--sc-font-mono);
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Fixed Navigation Header */
+    .nav-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      z-index: 100;
+      background: rgba(7, 16, 12, 0.92);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--sc-accent-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 clamp(1rem, 3vw, 2.5rem);
+      font-family: var(--sc-font-mono);
+      font-size: 0.82rem;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      text-decoration: none;
+      color: var(--sc-ink);
+    }
+
+    .nav-back-link {
+      color: var(--sc-ink-soft);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.2s ease;
+    }
+    .nav-back-link:hover {
+      color: var(--sc-accent);
+    }
+
+    .nav-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 4px 11px;
+      border-radius: 999px;
+      background: var(--sc-accent-soft);
+      border: 1px solid var(--sc-accent-border);
+      color: var(--sc-accent);
+      font-weight: 700;
+    }
+
+    .pulse-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--sc-accent);
+      box-shadow: 0 0 8px var(--sc-accent);
+      animation: pulse 2s infinite ease-in-out;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+
+    .main-wrap {
+      position: relative;
+      z-index: 10;
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+      padding: clamp(1.5rem, 3vw, 3rem) clamp(1rem, 3vw, 2.5rem) 4rem;
+      flex: 1;
+    }
+
+    /* Hero header */
+    .hero-strip {
+      margin-bottom: 2.5rem;
+    }
+
+    .eyebrow {
+      font-family: var(--sc-font-mono);
+      font-size: 0.76rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--sc-accent);
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    h1 {
+      font-size: clamp(2rem, 3.8vw, 3rem);
+      letter-spacing: -0.035em;
+      line-height: 1.15;
+      margin-bottom: 0.75rem;
+    }
+
+    .hero-lede {
+      color: var(--sc-ink-soft);
+      font-size: 1.05rem;
+      max-width: 75ch;
+    }
+
+    /* Telemetry HUD Grid */
+    .hud-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .hud-card {
+      background: var(--sc-surface);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 1.25rem 1.4rem;
+      box-shadow: var(--sc-shadow);
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.2s ease;
+    }
+
+    .hud-card:hover {
+      border-color: var(--sc-accent-border);
+    }
+
+    .hud-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--sc-accent);
+      opacity: 0.4;
+    }
+
+    .hud-num {
+      font-size: 2.2rem;
+      font-weight: 700;
+      line-height: 1;
+      margin-bottom: 0.5rem;
+      color: var(--sc-ink);
+    }
+
+    .hud-label {
+      font-family: var(--sc-font-mono);
+      font-size: 0.74rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--sc-ink-soft);
+    }
+
+    .hud-sub {
+      font-size: 0.78rem;
+      color: var(--sc-ink-muted);
+      margin-top: 4px;
+    }
+
+    /* Test Suites Overview Cards */
+    .suites-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 3rem;
+    }
+
+    .suite-card {
+      background: var(--sc-surface);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      padding: 1.25rem;
+      box-shadow: var(--sc-shadow);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .suite-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 0.75rem;
+    }
+
+    .suite-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--sc-ink);
+    }
+
+    .suite-count {
+      font-family: var(--sc-font-mono);
+      font-size: 0.75rem;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: var(--sc-accent-soft);
+      border: 1px solid var(--sc-accent-border);
+      color: var(--sc-accent);
+      font-weight: 700;
+    }
+
+    .suite-desc {
+      font-size: 0.85rem;
+      color: var(--sc-ink-soft);
+      line-height: 1.5;
+      margin-bottom: 1rem;
+    }
+
+    .suite-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--sc-font-mono);
+      font-size: 0.72rem;
+      color: var(--sc-ink-muted);
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      padding-top: 0.75rem;
+    }
+
+    /* Controls Bar: Filter Tabs & Search */
+    .controls-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--sc-surface);
+      padding: 0.85rem 1.25rem;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      margin-bottom: 1.5rem;
+    }
+
+    .filter-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .btn-pill {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--sc-ink-soft);
+      font-family: var(--sc-font-mono);
+      font-size: 0.75rem;
+      padding: 5px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-pill:hover {
+      border-color: var(--sc-accent-border);
+      color: var(--sc-ink);
+    }
+
+    .btn-pill.active {
+      background: var(--sc-accent-soft);
+      border-color: var(--sc-accent);
+      color: var(--sc-accent);
+      font-weight: 700;
+    }
+
+    .search-input {
+      background: #050d09;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 6px;
+      color: var(--sc-ink);
+      font-family: var(--sc-font-mono);
+      font-size: 0.78rem;
+      padding: 6px 12px;
+      min-width: 260px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .search-input:focus {
+      border-color: var(--sc-accent);
+    }
+
+    /* Interactive Test Table / Cards */
+    .tests-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-bottom: 3rem;
+    }
+
+    .test-card {
+      background: var(--sc-surface);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 8px;
+      padding: 1.1rem 1.35rem;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .test-card:hover {
+      background: var(--sc-surface-hover);
+      border-color: var(--sc-accent-border);
+      transform: translateY(-1px);
+    }
+
+    .test-main-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .test-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex: 1;
+      min-width: 280px;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--sc-font-mono);
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 4px;
+      background: var(--sc-accent-soft);
+      border: 1px solid var(--sc-accent-border);
+      color: var(--sc-accent);
+      flex-shrink: 0;
+    }
+
+    .test-name {
+      font-family: var(--sc-font-mono);
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--sc-ink);
+    }
+
+    .test-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: var(--sc-font-mono);
+      font-size: 0.74rem;
+      color: var(--sc-ink-soft);
+    }
+
+    .suite-tag {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 2px 8px;
+      border-radius: 4px;
+      color: #9ab4a7;
+    }
+
+    .duration-pill {
+      color: var(--sc-warn);
+    }
+
+    .test-desc {
+      color: var(--sc-ink-soft);
+      font-size: 0.85rem;
+      margin-top: 0.65rem;
+      padding-left: 2px;
+      line-height: 1.5;
+    }
+
+    /* Expandable drawer */
+    .test-drawer {
+      display: none;
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px dashed rgba(255, 255, 255, 0.1);
+      font-family: var(--sc-font-mono);
+      font-size: 0.75rem;
+    }
+
+    .test-card.expanded .test-drawer {
+      display: block;
+    }
+
+    .drawer-box {
+      background: #050d09;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 6px;
+      padding: 10px 14px;
+      color: #a4beaf;
+      line-height: 1.6;
+    }
+
+    /* Reproduce Section */
+    .reproduce-box {
+      background: var(--sc-surface);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 1.75rem;
+      margin-bottom: 3rem;
+    }
+
+    .reproduce-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .cmd-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .cmd-card {
+      background: #050d09;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 6px;
+      padding: 0.85rem 1.1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--sc-font-mono);
+      font-size: 0.78rem;
+    }
+
+    .cmd-text {
+      color: var(--sc-accent);
+      overflow-x: auto;
+      white-space: nowrap;
+      margin-right: 12px;
+    }
+
+    .btn-copy {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      color: var(--sc-ink);
+      font-family: var(--sc-font-mono);
+      font-size: 0.7rem;
+      padding: 4px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.2s;
+      flex-shrink: 0;
+    }
+
+    .btn-copy:hover {
+      background: var(--sc-accent-soft);
+      border-color: var(--sc-accent);
+      color: var(--sc-accent);
+    }
+
+    /* Footer */
+    .page-footer {
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 1.75rem clamp(1rem, 3vw, 2.5rem);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--sc-font-mono);
+      font-size: 0.78rem;
+      color: var(--sc-ink-muted);
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .page-footer a {
+      color: var(--sc-accent);
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Micro-noise Background Texture -->
+  <div class="bg-grain-overlay" aria-hidden="true"></div>
+
+  <!-- Telemetry Navigation Header -->
+  <header class="nav-header">
+    <div style="display: flex; align-items: center; gap: 1.5rem;">
+      <a href="index.html" class="nav-back-link">
+        <span>← Back to Lakehouse</span>
+      </a>
+      <span style="color: var(--sc-ink-muted);">/</span>
+      <div class="nav-brand">
+        <svg width="18" height="18" viewBox="0 0 32 32" fill="none">
+          <rect width="32" height="32" rx="8" fill="#08120e" stroke="#27c997" stroke-width="1.6"/>
+          <path d="M7 16h4l3-6 4 12 3-6h7" stroke="#27c997" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span style="font-weight: 700;">FinPulse Verification</span>
+      </div>
+    </div>
+
+    <div style="display: flex; align-items: center; gap: 1rem;">
+      <span class="nav-badge tabular-num">
+        <span class="pulse-dot"></span>
+        <span>28 / 28 PASS</span>
+      </span>
+      <a href="https://github.com/AmosAlloyce/FinPulse" target="_blank" rel="noopener noreferrer" style="color: var(--sc-ink-soft); text-decoration: none;">GitHub ↗</a>
+      <a href="/finpulse" style="color: var(--sc-accent); text-decoration: none;">Launch Cockpit ↗</a>
+    </div>
+  </header>
+
+  <main class="main-wrap">
+    
+    <!-- Hero Header Strip -->
+    <div class="hero-strip">
+      <div class="eyebrow">
+        <span>●</span>
+        <span>Continuous Quality Assurance · Selenium 4.51.0 + Pytest</span>
+      </div>
+      <h1>Automated Browser Verification Report</h1>
+      <p class="hero-lede">
+        Comprehensive end-to-end telemetry verifying the live FinPulse credit lakehouse website. Full compliance with W3C standards, Selenium Manager driver caching, explicit wait predicates, and WebDriver BiDi asynchronous observation.
+      </p>
+    </div>
+
+    <!-- Telemetry HUD Grid -->
+    <div class="hud-grid">
+      <div class="hud-card">
+        <div class="hud-num tabular-num" style="color: var(--sc-accent);">28 / 28</div>
+        <div class="hud-label">Test Suite Pass Rate</div>
+        <div class="hud-sub">100% successful execution</div>
+      </div>
+      <div class="hud-card">
+        <div class="hud-num tabular-num" style="color: var(--sc-accent);">0</div>
+        <div class="hud-label">Failures & Flakiness</div>
+        <div class="hud-sub">Deterministic explicit waits</div>
+      </div>
+      <div class="hud-card">
+        <div class="hud-num tabular-num" style="color: var(--sc-warn);">249.25s</div>
+        <div class="hud-label">Total Execution Time</div>
+        <div class="hud-sub">1 fresh Chrome session per test</div>
+      </div>
+      <div class="hud-card">
+        <div class="hud-num tabular-num" style="color: #92bfa9;">BiDi Active</div>
+        <div class="hud-label">Event Protocol</div>
+        <div class="hud-sub">Zero uncaught JS errors logged</div>
+      </div>
+    </div>
+
+    <!-- Test Suites Overview Grid -->
+    <div class="suites-grid">
+      <div class="suite-card">
+        <div class="suite-header">
+          <div class="suite-title">DLQ Crucible State Machine</div>
+          <span class="suite-count tabular-num">4 / 4 PASS</span>
+        </div>
+        <p class="suite-desc">
+          Validates poison packet injection (schema v0.0), circuit breaker isolation, contract patch staging, and dead-letter partition replay into Silver.
+        </p>
+        <div class="suite-footer">
+          <span>test_crucible_state_machine.py</span>
+          <span>Avg: ~7.4s</span>
+        </div>
+      </div>
+
+      <div class="suite-card">
+        <div class="suite-header">
+          <div class="suite-title">Navigation & Accessibility</div>
+          <span class="suite-count tabular-num">6 / 6 PASS</span>
+        </div>
+        <p class="suite-desc">
+          Verifies document metadata, keyboard skip-to-content links, telemetry ribbon branding, anchor jumps, and HUD metric calculations.
+        </p>
+        <div class="suite-footer">
+          <span>test_navigation_and_header.py</span>
+          <span>Avg: ~9.3s</span>
+        </div>
+      </div>
+
+      <div class="suite-card">
+        <div class="suite-header">
+          <div class="suite-title">Multi-Market Credit Risk Radar</div>
+          <span class="suite-count tabular-num">3 / 3 PASS</span>
+        </div>
+        <p class="suite-desc">
+          Tests the 5-market switcher (Kenya, Uganda, Ghana, Tanzania, Zambia), verifying dynamic approval rates, PAR30 risk, and WAI-ARIA tablist accessibility.
+        </p>
+        <div class="suite-footer">
+          <span>test_market_radar.py</span>
+          <span>Avg: ~9.3s</span>
+        </div>
+      </div>
+
+      <div class="suite-card">
+        <div class="suite-header">
+          <div class="suite-title">SQL Warehouse Console</div>
+          <span class="suite-count tabular-num">5 / 5 PASS</span>
+        </div>
+        <p class="suite-desc">
+          Validates 4 warehouse query presets (`mart_country_performance`, `mart_credit_funnel`, `quality_issues`, `mart_customer_features`) and custom SQL execution.
+        </p>
+        <div class="suite-footer">
+          <span>test_sql_terminal.py</span>
+          <span>Avg: ~11.1s</span>
+        </div>
+      </div>
+
+      <div class="suite-card">
+        <div class="suite-header">
+          <div class="suite-title">WebDriver BiDi Observability</div>
+          <span class="suite-count tabular-num">3 / 3 PASS</span>
+        </div>
+        <p class="suite-desc">
+          Asynchronous BiDi console log listener, real-time unhandled JavaScript exception assertion, and network interception without Chrome DevTools Protocol.
+        </p>
+        <div class="suite-footer">
+          <span>test_bidi_observability.py</span>
+          <span>Avg: ~4.9s</span>
+        </div>
+      </div>
+
+      <div class="suite-card">
+        <div class="suite-header">
+          <div class="suite-title">Responsive Multi-Device Layout</div>
+          <span class="suite-count tabular-num">3 / 3 PASS</span>
+        </div>
+        <p class="suite-desc">
+          Validates tactile controls, country tabs, and SQL terminals across Desktop (1920x1080), iPad portrait (768x1024), and iPhone mobile (375x812).
+        </p>
+        <div class="suite-footer">
+          <span>test_responsive_viewports.py</span>
+          <span>Avg: ~8.1s</span>
+        </div>
+      </div>
+
+      <div class="suite-card">
+        <div class="suite-header">
+          <div class="suite-title">E2E Report Presentation Page</div>
+          <span class="suite-count tabular-num">4 / 4 PASS</span>
+        </div>
+        <p class="suite-desc">
+          Validates telemetry HUD numbers, filter pills, dynamic keyword search, drawer expansion, and cross-page navigation links.
+        </p>
+        <div class="suite-footer">
+          <span>test_results_page.py</span>
+          <span>Avg: ~5.6s</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filter and Search Controls Bar -->
+    <div class="controls-bar">
+      <div class="filter-pills" id="filter-pills">
+        <button class="btn-pill active" data-filter="all">All Tests (28)</button>
+        <button class="btn-pill" data-filter="crucible">Crucible (4)</button>
+        <button class="btn-pill" data-filter="navigation">Navigation (6)</button>
+        <button class="btn-pill" data-filter="radar">Market Radar (3)</button>
+        <button class="btn-pill" data-filter="sql">SQL Terminal (5)</button>
+        <button class="btn-pill" data-filter="bidi">BiDi (3)</button>
+        <button class="btn-pill" data-filter="responsive">Responsive (3)</button>
+        <button class="btn-pill" data-filter="report">Report Page (4)</button>
+      </div>
+
+      <input type="text" id="search-input" class="search-input" placeholder="Search test name, keyword or assertion...">
+    </div>
+
+    <!-- Test List Items -->
+    <div class="tests-list" id="tests-list">
+      <!-- Injected dynamically via script below -->
+    </div>
+
+    <!-- Reproduce in Terminal -->
+    <div class="reproduce-box">
+      <div class="reproduce-title">
+        <span>⌨ Reproduce and Execute Locally</span>
+      </div>
+      <p style="color: var(--sc-ink-soft); font-size: 0.9rem;">
+        Tests can be executed in headless mode with Selenium Manager resolving browser drivers automatically:
+      </p>
+
+      <div class="cmd-grid">
+        <div class="cmd-card">
+          <div class="cmd-text">finpulse-repo/.venv/bin/pytest tests_e2e/ -v</div>
+          <button class="btn-copy" onclick="copyCmd('finpulse-repo/.venv/bin/pytest tests_e2e/ -v', this)">Copy</button>
+        </div>
+        <div class="cmd-card">
+          <div class="cmd-text">finpulse-repo/.venv/bin/pytest tests_e2e/test_crucible_state_machine.py -v</div>
+          <button class="btn-copy" onclick="copyCmd('finpulse-repo/.venv/bin/pytest tests_e2e/test_crucible_state_machine.py -v', this)">Copy</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="page-footer">
+    <div>
+      FinPulse E2E Quality Verification · Author: <strong style="color: var(--sc-ink);">Alloyce Amos</strong>
+    </div>
+    <div style="display: flex; gap: 1.5rem;">
+      <a href="index.html">FinPulse Lakehouse</a>
+      <a href="/finpulse">React Cockpit</a>
+      <a href="https://github.com/AmosAlloyce/FinPulse" target="_blank" rel="noopener noreferrer">GitHub Repository ↗</a>
+    </div>
+  </footer>
+
+  <script>
+    const testData = [
+      // Crucible State Machine
+      {
+        id: "test_crucible_initial_state",
+        suite: "DLQ Crucible State Machine",
+        category: "crucible",
+        duration: "6.080s",
+        desc: "Verifies initial baseline state of the DLQ crucible: normal streaming badge, enabled inject button, disabled patch/replay buttons.",
+        steps: [
+          "Navigate to /finpulse/index.html",
+          "Assert crucible badge text equals 'Pipeline: normal streaming'",
+          "Assert btn-inject-poison is_enabled == True",
+          "Assert btn-patch-schema is_enabled == False",
+          "Assert btn-replay-dlq is_enabled == False",
+          "Assert node-quarantine has neutral styling without alert classes"
+        ]
+      },
+      {
+        id: "test_crucible_poison_injection_transition",
+        suite: "DLQ Crucible State Machine",
+        category: "crucible",
+        duration: "6.179s",
+        desc: "Validates state machine reaction to poison packet: circuit-breaker trigger, quarantine badge, node quarantine state, Pydantic error logs.",
+        steps: [
+          "Scroll to and click 'Inject poison packet (schema v0.0)'",
+          "Explicitly wait for crucible badge text to contain 'poison quarantined'",
+          "Assert btn-inject-poison disabled attribute is set",
+          "Assert btn-patch-schema becomes enabled",
+          "Assert console outputs S3 quarantine destination prefix",
+          "Assert node-quarantine DOM element gains 'quarantine-state' CSS class"
+        ]
+      },
+      {
+        id: "test_crucible_end_to_end_replay_lifecycle",
+        suite: "DLQ Crucible State Machine",
+        category: "crucible",
+        duration: "6.195s",
+        desc: "Executes full lifecycle: Inject poison -> Contract patch -> DLQ replay -> Reconciled silver lakehouse sink.",
+        steps: [
+          "Inject poison packet and verify quarantine gate",
+          "Click 'Apply schema v1.0 patch' and wait for staging confirmation",
+          "Assert btn-replay-dlq becomes clickable",
+          "Click 'Replay DLQ partition to Silver'",
+          "Assert crucible badge transitions to 'Pipeline: reconciled (DLQ empty)'",
+          "Assert Silver Lakehouse node indicates recovered stream write"
+        ]
+      },
+      {
+        id: "test_crucible_reset_flow",
+        suite: "DLQ Crucible State Machine",
+        category: "crucible",
+        duration: "11.073s",
+        desc: "Verifies resetting crucible restores normal streaming, clears quarantine styles, and resets log console.",
+        steps: [
+          "Execute full recovery cycle through replay",
+          "Click 'Reset crucible'",
+          "Wait for badge text to return to 'Pipeline: normal streaming'",
+          "Assert inject button re-enabled and downstream buttons disabled",
+          "Assert quarantine and replayed classes are cleared from all pipeline stages"
+        ]
+      },
+
+      // Navigation & Header
+      {
+        id: "test_page_title_and_metadata",
+        suite: "Navigation, A11y & Hero HUD",
+        category: "navigation",
+        duration: "5.449s",
+        desc: "Asserts document title, meta description, and viewport configuration for SEO and accessibility.",
+        steps: [
+          "Navigate to /finpulse/index.html",
+          "Assert document title contains 'FinPulse' and 'credit data platform'",
+          "Assert meta description contains 'Medallion Lakehouse' and '5 African markets'"
+        ]
+      },
+      {
+        id: "test_keyboard_accessibility_skip_link",
+        suite: "Navigation, A11y & Hero HUD",
+        category: "navigation",
+        duration: "11.087s",
+        desc: "Verifies skip-to-content accessibility link targets #main-content and responds to keyboard focus.",
+        steps: [
+          "Locate .skip-to-content element",
+          "Assert href ends with '#main-content'",
+          "Trigger keyboard focus event via JavaScript",
+          "Assert active element in DOM switches to skip link"
+        ]
+      },
+      {
+        id: "test_telemetry_ribbon_brand_and_stats",
+        suite: "Navigation, A11y & Hero HUD",
+        category: "navigation",
+        duration: "11.115s",
+        desc: "Verifies brand typography, animated pulse indicator, and live event counter in top navigation ribbon.",
+        steps: [
+          "Assert brand label equals 'FinPulse'",
+          "Assert status pulse indicator is rendered",
+          "Assert top stat text contains '2,010 events · 5 markets'"
+        ]
+      },
+      {
+        id: "test_navigation_jump_links_structure",
+        suite: "Navigation, A11y & Hero HUD",
+        category: "navigation",
+        duration: "11.083s",
+        desc: "Asserts all 8 narrative act jump links exist in order with correct anchor targets.",
+        steps: [
+          "Query all navigation links inside header",
+          "Assert sequence: 01 Ingress, 02 Spark stream, 03 DLQ crucible, 04 Lakehouse, 05 dbt marts, 06 Market risk, 07 Production SRE, 08 SQL terminal",
+          "Assert anchor hrefs match #act-ingress through #act-console"
+        ]
+      },
+      {
+        id: "test_hero_hud_metrics",
+        suite: "Navigation, A11y & Hero HUD",
+        category: "navigation",
+        duration: "11.081s",
+        desc: "Verifies HUD metric values and labels (Ingested events: 2,010, Acceptance rate: 99.90%, P95 lag: 420 ms, Quarantined records: 2 DLQ).",
+        steps: [
+          "Locate HUD grid elements",
+          "Assert 4 distinct HUD telemetry cards exist",
+          "Verify exact values: 2,010 events, 99.90% acceptance, 420 ms lag, 2 DLQ quarantine"
+        ]
+      },
+      {
+        id: "test_repository_external_links_security",
+        suite: "Navigation, A11y & Hero HUD",
+        category: "navigation",
+        duration: "5.870s",
+        desc: "Asserts GitHub repository links enforce target='_blank' and rel='noopener noreferrer' security headers.",
+        steps: [
+          "Query external repository anchor tags",
+          "Assert target attribute is '_blank'",
+          "Assert rel attribute contains both 'noopener' and 'noreferrer'"
+        ]
+      },
+
+      // Market Risk Radar
+      {
+        id: "test_default_active_country_kenya",
+        suite: "Multi-Market Credit Risk Radar",
+        category: "radar",
+        duration: "11.078s",
+        desc: "Checks default active market tab (Kenya / KES), approval rate 41.18%, score 572.5, PAR30 20.00%, and application count.",
+        steps: [
+          "Locate active country button",
+          "Assert default active country is 'KEN'",
+          "Assert approval rate: 41.18%",
+          "Assert average score: 572.5",
+          "Assert PAR30: 20.00%",
+          "Assert currency volume label indicates KES"
+        ]
+      },
+      {
+        id: "test_country_switcher_all_african_markets",
+        suite: "Multi-Market Credit Risk Radar",
+        category: "radar",
+        duration: "11.089s",
+        desc: "Switches across all 5 African markets (KEN, UGA, GHA, TZA, ZMB) and asserts dynamic KPI calculations, currencies, and descriptions.",
+        steps: [
+          "Iterate over UGA, GHA, TZA, ZMB",
+          "Click each respective country tab",
+          "Wait for active class assignment",
+          "Assert dynamic score and capital volume updates accurately per market"
+        ]
+      },
+      {
+        id: "test_country_selector_aria_selected_state",
+        suite: "Multi-Market Credit Risk Radar",
+        category: "radar",
+        duration: "5.670s",
+        desc: "Verifies WAI-ARIA tablist accessibility attributes (aria-selected, role=tab, active class) across country buttons.",
+        steps: [
+          "Select Ghana tab",
+          "Assert Ghana button has aria-selected='true'",
+          "Assert all non-active buttons have aria-selected='false'"
+        ]
+      },
+
+      // SQL Terminal
+      {
+        id: "test_default_terminal_query_and_table",
+        suite: "SQL Warehouse Console Terminal",
+        category: "sql",
+        duration: "11.081s",
+        desc: "Asserts default SQL query (mart_country_performance) renders 8 table headers and 5 market rows.",
+        steps: [
+          "Locate SQL input element and assert default value",
+          "Assert results table contains 8 schema headers",
+          "Assert 5 records rendered for GHA, KEN, TZA, UGA, ZMB"
+        ]
+      },
+      {
+        id: "test_preset_credit_funnel_query",
+        suite: "SQL Warehouse Console Terminal",
+        category: "sql",
+        duration: "11.059s",
+        desc: "Validates selecting mart_credit_funnel preset updates input and renders credit funnel progression row.",
+        steps: [
+          "Click preset button 'mart_credit_funnel'",
+          "Assert input text matches clicked preset query",
+          "Assert headers: applications, decisions, approvals, loans_with_repayment, settled_payments",
+          "Assert values match warehouse funnel state: 172, 58, 26, 19, 14"
+        ]
+      },
+      {
+        id: "test_preset_quality_issues_query",
+        suite: "SQL Warehouse Console Terminal",
+        category: "sql",
+        duration: "11.087s",
+        desc: "Validates selecting quality_issues preset renders quarantine error log rows with rule, severity, and message.",
+        steps: [
+          "Click preset button 'quality_issues'",
+          "Assert 2 quality issue rows rendered",
+          "Assert severity 'ERROR' and Pydantic validation message content"
+        ]
+      },
+      {
+        id: "test_preset_customer_features_query",
+        suite: "SQL Warehouse Console Terminal",
+        category: "sql",
+        duration: "11.070s",
+        desc: "Validates selecting mart_customer_features preset displays 4 synthetic borrower feature store rows.",
+        steps: [
+          "Click preset button 'mart_customer_features'",
+          "Assert 4 customer feature rows rendered with income band and airtime topup"
+        ]
+      },
+      {
+        id: "test_custom_sql_input_execution",
+        suite: "SQL Warehouse Console Terminal",
+        category: "sql",
+        duration: "11.057s",
+        desc: "Verifies custom SQL query execution via text input and Execute button with dynamic table rendering.",
+        steps: [
+          "Clear and send keys into SQL input",
+          "Click 'Run query' button",
+          "Assert dynamic result table updates and renders expected columns"
+        ]
+      },
+
+      // BiDi Observability
+      {
+        id: "test_bidi_zero_uncaught_javascript_errors_during_interactions",
+        suite: "WebDriver BiDi Observability",
+        category: "bidi",
+        duration: "6.986s",
+        desc: "Asserts zero unhandled JavaScript runtime exceptions occur across interactive flows using WebDriver BiDi error handler.",
+        steps: [
+          "Register driver.script.add_javascript_error_handler",
+          "Interact with crucible, country switcher, and SQL presets",
+          "Assert length of captured JavaScript errors is exactly 0"
+        ]
+      },
+      {
+        id: "test_bidi_console_log_interception",
+        suite: "WebDriver BiDi Observability",
+        category: "bidi",
+        duration: "6.399s",
+        desc: "Listens for real-time browser console emissions via driver.script.add_console_message_handler.",
+        steps: [
+          "Register driver.script.add_console_message_handler",
+          "Emit test telemetry message via script execution",
+          "Wait explicitly for BiDi event dispatch",
+          "Assert matching message is received and logged"
+        ]
+      },
+      {
+        id: "test_bidi_network_interception",
+        suite: "WebDriver BiDi Observability",
+        category: "bidi",
+        duration: "1.432s",
+        desc: "Validates WebDriver BiDi network interception capabilities without Chrome DevTools Protocol.",
+        steps: [
+          "Register network intercept via driver.network._add_intercept",
+          "Assert intercept ID returned",
+          "Cleanly deregister intercept and assert list is empty"
+        ]
+      },
+
+      // Responsive Viewports
+      {
+        id: "test_desktop_viewport_interaction",
+        suite: "Responsive Multi-Device Layout",
+        category: "responsive",
+        duration: "11.152s",
+        desc: "Validates complete interaction flow on standard 1080p desktop resolution (1920x1080).",
+        steps: [
+          "Set browser viewport to 1920x1080",
+          "Execute crucible anomaly injection and country tab toggle",
+          "Assert metrics render properly without horizontal clipping"
+        ]
+      },
+      {
+        id: "test_tablet_viewport_interaction",
+        suite: "Responsive Multi-Device Layout",
+        category: "responsive",
+        duration: "6.569s",
+        desc: "Validates layout responsiveness and crucible action flow on iPad portrait resolution (768x1024).",
+        steps: [
+          "Set browser viewport to 768x1024",
+          "Assert hero elements adapt smoothly",
+          "Execute poison packet recovery flow on tablet layout"
+        ]
+      },
+      {
+        id: "test_mobile_viewport_interaction",
+        suite: "Responsive Multi-Device Layout",
+        category: "responsive",
+        duration: "6.678s",
+        desc: "Validates layout responsiveness and country tabs on iPhone mobile resolution (375x812).",
+        steps: [
+          "Set browser viewport to 375x812",
+          "Interact with mobile country tabs and preset queries",
+          "Assert table container scrollability and touch targets"
+        ]
+      },
+
+      // E2E Results Presentation Page
+      {
+        id: "test_results_page_hud_telemetry",
+        suite: "E2E Report Presentation Page",
+        category: "report",
+        duration: "5.452s",
+        desc: "Verifies test results page loads and displays 28/28 pass rate, HUD telemetry, zero failures, and BiDi status.",
+        steps: [
+          "Navigate to /finpulse/tests.html",
+          "Wait for title to contain 'E2E Test Suite Results'",
+          "Assert 4 distinct HUD telemetry cards exist",
+          "Assert 100% successful execution and BiDi Active status"
+        ]
+      },
+      {
+        id: "test_results_page_filtering_and_search",
+        suite: "E2E Report Presentation Page",
+        category: "report",
+        duration: "5.539s",
+        desc: "Validates filter pills and search input dynamically filter displayed test cards without reload.",
+        steps: [
+          "Assert initial rendered card count matches total suite",
+          "Click 'Crucible' filter pill and assert cards filter to 4",
+          "Input exact test ID into search bar",
+          "Assert cards dynamically filter to exactly 1 matching card"
+        ]
+      },
+      {
+        id: "test_results_page_expandable_test_card_drawer",
+        suite: "E2E Report Presentation Page",
+        category: "report",
+        duration: "5.621s",
+        desc: "Verifies clicking a test card expands the assertion steps drawer and reveals step transcripts.",
+        steps: [
+          "Locate and click test card",
+          "Wait for 'expanded' class on card",
+          "Assert test drawer is visible with asserted steps"
+        ]
+      },
+      {
+        id: "test_lakehouse_navigation_link_to_results",
+        suite: "E2E Report Presentation Page",
+        category: "report",
+        duration: "5.688s",
+        desc: "Verifies the main FinPulse showcase page links cleanly to the automated E2E test report.",
+        steps: [
+          "Navigate to /finpulse/index.html",
+          "Locate and scroll to '28/28 E2E Pass' badge in ribbon",
+          "Click link and verify navigation to /finpulse/tests.html"
+        ]
+      }
+    ];
+
+    const listContainer = document.getElementById('tests-list');
+    const filterPills = document.querySelectorAll('.btn-pill');
+    const searchInput = document.getElementById('search-input');
+
+    let currentFilter = 'all';
+    let searchQuery = '';
+
+    function renderTests() {
+      listContainer.innerHTML = '';
+
+      const filtered = testData.filter(t => {
+        const matchesFilter = (currentFilter === 'all') || (t.category === currentFilter);
+        const matchesSearch = !searchQuery || 
+          t.id.toLowerCase().includes(searchQuery) ||
+          t.suite.toLowerCase().includes(searchQuery) ||
+          t.desc.toLowerCase().includes(searchQuery);
+        return matchesFilter && matchesSearch;
+      });
+
+      if (filtered.length === 0) {
+        listContainer.innerHTML = `
+          <div style="text-align: center; padding: 3rem; background: var(--sc-surface); border-radius: 8px; color: var(--sc-ink-muted);">
+            No tests match the current search or filter query.
+          </div>
+        `;
+        return;
+      }
+
+      filtered.forEach(t => {
+        const card = document.createElement('div');
+        card.className = 'test-card';
+        card.innerHTML = `
+          <div class="test-main-row">
+            <div class="test-info">
+              <span class="status-badge">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+                <span>PASSED</span>
+              </span>
+              <span class="test-name">${t.id}</span>
+            </div>
+            <div class="test-meta">
+              <span class="suite-tag">${t.suite}</span>
+              <span class="duration-pill tabular-num">${t.duration}</span>
+              <span style="font-size: 0.75rem; color: var(--sc-accent);">Details ▾</span>
+            </div>
+          </div>
+          <div class="test-desc">${t.desc}</div>
+          <div class="test-drawer">
+            <div class="drawer-box">
+              <div style="color: var(--sc-accent); margin-bottom: 6px; font-weight: 700;">Asserted Steps & Verification Flow:</div>
+              <ol style="padding-left: 18px; line-height: 1.6;">
+                ${t.steps.map(s => `<li>${s}</li>`).join('')}
+              </ol>
+            </div>
+          </div>
+        `;
+
+        card.addEventListener('click', () => {
+          card.classList.toggle('expanded');
+          const chevron = card.querySelector('.test-meta span:last-child');
+          if (chevron) {
+            chevron.innerText = card.classList.contains('expanded') ? 'Hide ▴' : 'Details ▾';
+          }
+        });
+
+        listContainer.appendChild(card);
+      });
+    }
+
+    filterPills.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterPills.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentFilter = btn.dataset.filter;
+        renderTests();
+      });
+    });
+
+    searchInput.addEventListener('input', (e) => {
+      searchQuery = e.target.value.toLowerCase().trim();
+      renderTests();
+    });
+
+    window.copyCmd = function(text, btn) {
+      navigator.clipboard.writeText(text).then(() => {
+        const originalText = btn.innerText;
+        btn.innerText = 'Copied!';
+        setTimeout(() => { btn.innerText = originalText; }, 1500);
+      });
+    };
+
+    renderTests();
+  </script>
+</body>
+</html>

@@ -1,0 +1,237 @@
+{
+  "total_tests": 28,
+  "passed": 28,
+  "failed": 0,
+  "errors": 0,
+  "total_duration_seconds": 249.26,
+  "timestamp": "2026-10-13T11:39:02.091289+03:00",
+  "framework": "Selenium 4.51.0 + pytest 9.1.1",
+  "protocol": "W3C WebDriver + WebDriver BiDi",
+  "browser": "Google Chrome 155 (Headless New)",
+  "tests": [
+    {
+      "id": "test_bidi_zero_uncaught_javascript_errors_during_interactions",
+      "suite": "WebDriver BiDi Observability",
+      "module": "test_bidi_observability",
+      "name": "test_bidi_zero_uncaught_javascript_errors_during_interactions",
+      "status": "PASSED",
+      "duration_seconds": 7.677
+    },
+    {
+      "id": "test_bidi_console_log_interception",
+      "suite": "WebDriver BiDi Observability",
+      "module": "test_bidi_observability",
+      "name": "test_bidi_console_log_interception",
+      "status": "PASSED",
+      "duration_seconds": 6.512
+    },
+    {
+      "id": "test_bidi_network_interception",
+      "suite": "WebDriver BiDi Observability",
+      "module": "test_bidi_observability",
+      "name": "test_bidi_network_interception",
+      "status": "PASSED",
+      "duration_seconds": 1.412
+    },
+    {
+      "id": "test_crucible_initial_state",
+      "suite": "DLQ Crucible State Machine",
+      "module": "test_crucible_state_machine",
+      "name": "test_crucible_initial_state",
+      "status": "PASSED",
+      "duration_seconds": 11.059
+    },
+    {
+      "id": "test_crucible_poison_injection_transition",
+      "suite": "DLQ Crucible State Machine",
+      "module": "test_crucible_state_machine",
+      "name": "test_crucible_poison_injection_transition",
+      "status": "PASSED",
+      "duration_seconds": 11.097
+    },
+    {
+      "id": "test_crucible_end_to_end_replay_lifecycle",
+      "suite": "DLQ Crucible State Machine",
+      "module": "test_crucible_state_machine",
+      "name": "test_crucible_end_to_end_replay_lifecycle",
+      "status": "PASSED",
+      "duration_seconds": 6.794
+    },
+    {
+      "id": "test_crucible_reset_flow",
+      "suite": "DLQ Crucible State Machine",
+      "module": "test_crucible_state_machine",
+      "name": "test_crucible_reset_flow",
+      "status": "PASSED",
+      "duration_seconds": 11.059
+    },
+    {
+      "id": "test_default_active_country_kenya",
+      "suite": "Multi-Market Credit Risk Radar",
+      "module": "test_market_radar",
+      "name": "test_default_active_country_kenya",
+      "status": "PASSED",
+      "duration_seconds": 11.048
+    },
+    {
+      "id": "test_country_switcher_all_african_markets",
+      "suite": "Multi-Market Credit Risk Radar",
+      "module": "test_market_radar",
+      "name": "test_country_switcher_all_african_markets",
+      "status": "PASSED",
+      "duration_seconds": 7.672
+    },
+    {
+      "id": "test_country_selector_aria_selected_state",
+      "suite": "Multi-Market Credit Risk Radar",
+      "module": "test_market_radar",
+      "name": "test_country_selector_aria_selected_state",
+      "status": "PASSED",
+      "duration_seconds": 11.092
+    },
+    {
+      "id": "test_page_title_and_metadata",
+      "suite": "Navigation, A11y & Hero HUD",
+      "module": "test_navigation_and_header",
+      "name": "test_page_title_and_metadata",
+      "status": "PASSED",
+      "duration_seconds": 11.078
+    },
+    {
+      "id": "test_keyboard_accessibility_skip_link",
+      "suite": "Navigation, A11y & Hero HUD",
+      "module": "test_navigation_and_header",
+      "name": "test_keyboard_accessibility_skip_link",
+      "status": "PASSED",
+      "duration_seconds": 5.734
+    },
+    {
+      "id": "test_telemetry_ribbon_brand_and_stats",
+      "suite": "Navigation, A11y & Hero HUD",
+      "module": "test_navigation_and_header",
+      "name": "test_telemetry_ribbon_brand_and_stats",
+      "status": "PASSED",
+      "duration_seconds": 11.072
+    },
+    {
+      "id": "test_navigation_jump_links_structure",
+      "suite": "Navigation, A11y & Hero HUD",
+      "module": "test_navigation_and_header",
+      "name": "test_navigation_jump_links_structure",
+      "status": "PASSED",
+      "duration_seconds": 11.079
+    },
+    {
+      "id": "test_hero_hud_metrics",
+      "suite": "Navigation, A11y & Hero HUD",
+      "module": "test_navigation_and_header",
+      "name": "test_hero_hud_metrics",
+      "status": "PASSED",
+      "duration_seconds": 11.05
+    },
+    {
+      "id": "test_repository_external_links_security",
+      "suite": "Navigation, A11y & Hero HUD",
+      "module": "test_navigation_and_header",
+      "name": "test_repository_external_links_security",
+      "status": "PASSED",
+      "duration_seconds": 11.04
+    },
+    {
+      "id": "test_desktop_viewport_interaction",
+      "suite": "Responsive Multi-Device Layout",
+      "module": "test_responsive_viewports",
+      "name": "test_desktop_viewport_interaction",
+      "status": "PASSED",
+      "duration_seconds": 11.053
+    },
+    {
+      "id": "test_tablet_viewport_interaction",
+      "suite": "Responsive Multi-Device Layout",
+      "module": "test_responsive_viewports",
+      "name": "test_tablet_viewport_interaction",
+      "status": "PASSED",
+      "duration_seconds": 6.39
+    },
+    {
+      "id": "test_mobile_viewport_interaction",
+      "suite": "Responsive Multi-Device Layout",
+      "module": "test_responsive_viewports",
+      "name": "test_mobile_viewport_interaction",
+      "status": "PASSED",
+      "duration_seconds": 6.8
+    },
+    {
+      "id": "test_results_page_hud_telemetry",
+      "suite": "E2E Report Presentation Page",
+      "module": "test_results_page",
+      "name": "test_results_page_hud_telemetry",
+      "status": "PASSED",
+      "duration_seconds": 5.52
+    },
+    {
+      "id": "test_results_page_filtering_and_search",
+      "suite": "E2E Report Presentation Page",
+      "module": "test_results_page",
+      "name": "test_results_page_filtering_and_search",
+      "status": "PASSED",
+      "duration_seconds": 11.119
+    },
+    {
+      "id": "test_results_page_expandable_test_card_drawer",
+      "suite": "E2E Report Presentation Page",
+      "module": "test_results_page",
+      "name": "test_results_page_expandable_test_card_drawer",
+      "status": "PASSED",
+      "duration_seconds": 5.069
+    },
+    {
+      "id": "test_lakehouse_navigation_link_to_results",
+      "suite": "E2E Report Presentation Page",
+      "module": "test_results_page",
+      "name": "test_lakehouse_navigation_link_to_results",
+      "status": "PASSED",
+      "duration_seconds": 5.865
+    },
+    {
+      "id": "test_default_terminal_query_and_table",
+      "suite": "SQL Warehouse Console Terminal",
+      "module": "test_sql_terminal",
+      "name": "test_default_terminal_query_and_table",
+      "status": "PASSED",
+      "duration_seconds": 11.087
+    },
+    {
+      "id": "test_preset_credit_funnel_query",
+      "suite": "SQL Warehouse Console Terminal",
+      "module": "test_sql_terminal",
+      "name": "test_preset_credit_funnel_query",
+      "status": "PASSED",
+      "duration_seconds": 11.087
+    },
+    {
+      "id": "test_preset_quality_issues_query",
+      "suite": "SQL Warehouse Console Terminal",
+      "module": "test_sql_terminal",
+      "name": "test_preset_quality_issues_query",
+      "status": "PASSED",
+      "duration_seconds": 5.927
+    },
+    {
+      "id": "test_preset_customer_features_query",
+      "suite": "SQL Warehouse Console Terminal",
+      "module": "test_sql_terminal",
+      "name": "test_preset_customer_features_query",
+      "status": "PASSED",
+      "duration_seconds": 11.175
+    },
+    {
+      "id": "test_custom_sql_input_execution",
+      "suite": "SQL Warehouse Console Terminal",
+      "module": "test_sql_terminal",
+      "name": "test_custom_sql_input_execution",
+      "status": "PASSED",
+      "duration_seconds": 11.303
+    }
+  ]
+}

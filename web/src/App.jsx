@@ -1501,6 +1501,15 @@ export default function App() {
             </span>
           </div>
           <div className="topbar-actions">
+            <a
+              href="tests.html"
+              className="quick-search"
+              style={{ textDecoration: 'none', color: '#27c997', borderColor: 'rgba(39, 201, 151, 0.4)', gap: '6px' }}
+              title="Automated Selenium E2E Test Suite (28/28 Pass)"
+            >
+              <Check size={16} />
+              <span>28/28 E2E Pass</span>
+            </a>
             <button
               className="quick-search"
               onClick={() => {
